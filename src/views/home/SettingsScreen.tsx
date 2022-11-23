@@ -28,8 +28,12 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
   const handlePressOper = (name?: string) => {
     if (name) {
       if (name === 'logout') {
-        dispatch(logout());
-        MessageUtil('退出成功');
+        if (!token) {
+          MessageUtil('请先登录');
+        } else {
+          dispatch(logout());
+          MessageUtil('退出成功');
+        }
       } else {
         handleNavigate(name);
       }
@@ -52,7 +56,10 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
   });
   return (
     <ScrollView style={styles.wrapper}>
-      <BottomSheet modalProps={{}} isVisible={isVisible}>
+      <BottomSheet
+        modalProps={{}}
+        isVisible={isVisible}
+        onBackdropPress={() => setIsVisible(false)}>
         {list.map((item, index) => (
           <ListItem
             key={index}
@@ -107,7 +114,7 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
             </Text>
           </View>
         ) : (
-          <Text style={styles.nameStyle}>请先登录</Text>
+          <Text style={styles.nameStyle}>请先点击登录</Text>
         )}
       </View>
       <View style={styles.listStyle}>

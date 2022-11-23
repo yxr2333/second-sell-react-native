@@ -83,7 +83,7 @@ const SpikeScreen: React.FC = () => {
         value={index}
         onChange={handleChange}
         animationType="spring"
-        disableSwipe={true}>
+        disableSwipe={false}>
         <TabView.Item>
           <View style={{ width: w }}>
             <Pricing />

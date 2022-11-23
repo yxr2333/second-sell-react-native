@@ -18,6 +18,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        jcenter()
         maven {
             allowInsecureProtocol = true
             url 'http://maven.aliyun.com/nexus/content/groups/public/'
@@ -30,6 +31,15 @@ buildscript {
             allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
+        maven{
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven{
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/central'
+        }
+
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.2.1")
@@ -62,7 +72,16 @@ allprojects {
             allowInsecureProtocol = true
             url 'https://maven.aliyun.com/repository/gradle-plugin'
         }
+        maven{
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/google'
+        }
+        maven{
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/central'
+        }
         mavenCentral()
         google()
+        maven { url "https://jitpack.io" }
     }
 }

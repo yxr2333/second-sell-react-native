@@ -1,10 +1,16 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Text, View } from 'react-native';
-const Publish: React.FC = () => {
+import AuthChecker from './../../../utils/AuthChecker';
+const Publish: React.FC<NativeStackScreenProps<any, any>> = ({
+  navigation,
+}) => {
   return (
-    <View>
-      <Text>Hello</Text>
-    </View>
+    <AuthChecker navigation={navigation}>
+      <View>
+        <Text>Hello</Text>
+      </View>
+    </AuthChecker>
   );
 };
 export default Publish;

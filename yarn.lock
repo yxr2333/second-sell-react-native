@@ -7064,6 +7064,11 @@
   "resolved" "https://registry.npmmirror.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.70.3.tgz"
   "version" "0.70.3"
 
+"react-native-image-crop-picker@^0.38.1":
+  "integrity" "sha512-cF5UQnWplzHCeiCO+aiGS/0VomWaLmFf3nSsgTMPfY+8+99h8N/eHQvVdSF7RsGw50B8394wGeGyqHjjp8YRWw=="
+  "resolved" "https://registry.npmmirror.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.38.1.tgz"
+  "version" "0.38.1"
+
 "react-native-linear-gradient@^2.6.2":
   "integrity" "sha512-Z8Xxvupsex+9BBFoSYS87bilNPWcRfRsGC0cpJk72Nxb5p2nEkGSBv73xZbEHnW2mUFvP+huYxrVvjZkr/gRjQ=="
   "resolved" "https://registry.npmmirror.com/react-native-linear-gradient/-/react-native-linear-gradient-2.6.2.tgz"
@@ -7170,7 +7175,7 @@
   "resolved" "https://registry.npmmirror.com/react-native-waterfall-flow/-/react-native-waterfall-flow-1.1.4.tgz"
   "version" "1.1.4"
 
-"react-native@*", "react-native@>=0.19.0", "react-native@>=0.44", "react-native@>=0.45.0", "react-native@>=0.47.0", "react-native@>=0.59", "react-native@0.70.5":
+"react-native@*", "react-native@>=0.19.0", "react-native@>=0.40.0", "react-native@>=0.44", "react-native@>=0.45.0", "react-native@>=0.47.0", "react-native@>=0.59", "react-native@0.70.5":
   "integrity" "sha512-5NZM80LC3L+TIgQX/09yiyy48S73wMgpIgN5cCv3XTMR394+KpDI3rBZGH4aIgWWuwijz31YYVF5504+9n2Zfw=="
   "resolved" "https://registry.npmmirror.com/react-native/-/react-native-0.70.5.tgz"
   "version" "0.70.5"

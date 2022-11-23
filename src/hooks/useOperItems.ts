@@ -7,15 +7,15 @@ export default function useOperItems(
     {
       title: '个人资料',
       icon: {
-        name: 'pencil',
-        type: 'font-awesome',
+        name: 'profile',
+        type: 'antdesign',
       },
       viewName: 'PersonalInfo',
     },
     {
       title: '地址管理',
       icon: {
-        name: 'pencil',
+        name: 'address-book-o',
         type: 'font-awesome',
       },
       viewName: 'AddressControl',
@@ -23,16 +23,16 @@ export default function useOperItems(
     {
       title: '账号与安全',
       icon: {
-        name: 'pencil',
-        type: 'font-awesome',
+        name: 'account',
+        type: 'material-community',
       },
       viewName: 'SecureDetail',
     },
     {
       title: '退出登录',
       icon: {
-        name: 'pencil',
-        type: 'font-awesome',
+        name: 'logout',
+        type: 'materialicons',
         color: '#fff',
       },
       containerStyle: { backgroundColor: 'red' },

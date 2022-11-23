@@ -9,8 +9,8 @@ import { login } from '../../store/userSlice';
 import { UserLoginResult } from '../../types/response/developResponse';
 
 const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState('icecream');
+  const [password, setPassword] = React.useState('123456');
   const [title, setTitle] = React.useState('登录');
   const dispatch = useDispatch();
 
@@ -71,11 +71,13 @@ const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
       />
       <View style={styles.form}>
         <Input
+          defaultValue="icecream"
           placeholder="请输入用户名"
           label="用户名"
           onChangeText={setUsername}
         />
         <Input
+          defaultValue="123456"
           placeholder="请输入密码"
           label="密码"
           secureTextEntry={true}

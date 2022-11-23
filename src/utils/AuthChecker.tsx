@@ -3,11 +3,21 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { selectUserInfo } from '../store/userSlice';
 import MessageUtil from './message';
-const AuthChecker: React.FC<any> = ({ children, navigation }) => {
+const AuthChecker = ({
+  children,
+  navigation,
+}: {
+  children: JSX.Element;
+  navigation: any;
+}) => {
   const userInfo = useSelector(selectUserInfo);
+  React.useEffect(() => {
+    if (!userInfo.token) {
+      MessageUtil('请先登录');
+      navigation.replace('Login');
+    }
+  });
 
-  return userInfo.token
-    ? children
-    : (navigation.replace('Login'), MessageUtil('请先登录！'), (<View />));
+  return userInfo.token ? children : <View />;
 };
 export default AuthChecker;

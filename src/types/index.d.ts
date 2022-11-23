@@ -18,6 +18,9 @@ export interface StackParamList extends ParamListBase {
     goodsId: number;
   };
   CartList: {};
+  AuthChecker: {
+    children: React.ReactNode;
+  };
 }
 
 export type IconItem = {

@@ -1,10 +1,14 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Text, View } from 'react-native';
-const Sold: React.FC = () => {
+import AuthChecker from '../../../utils/AuthChecker';
+const Sold: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
   return (
-    <View>
-      <Text>Sold</Text>
-    </View>
+    <AuthChecker navigation={navigation}>
+      <View>
+        <Text>Sold</Text>
+      </View>
+    </AuthChecker>
   );
 };
 export default Sold;
