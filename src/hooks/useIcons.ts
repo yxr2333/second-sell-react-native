@@ -19,7 +19,9 @@ const styles = StyleSheet.create({
   },
 });
 // 标注useIcons的返回值类型
-export default function useIcons(choice?: number): IconItem[] | null {
+export default function useIcons(
+  choice?: number,
+): IconItem[] | null | IconItem[][] {
   if (!choice || choice === 1) {
     return list1;
   } else if (choice === 2) {
@@ -30,70 +32,74 @@ export default function useIcons(choice?: number): IconItem[] | null {
 }
 
 const list1 = [
-  {
-    icon: {
-      name: 'phone',
-      type: 'font-awesome',
+  [
+    {
+      icon: {
+        name: 'phone',
+        type: 'font-awesome',
+      },
+      bg: styles.themeBg,
+      text: '手机',
     },
-    bg: styles.themeBg,
-    text: '手机',
-  },
-  {
-    icon: {
-      name: 'laptop',
-      type: 'font-awesome',
+    {
+      icon: {
+        name: 'laptop',
+        type: 'font-awesome',
+      },
+      bg: styles.themeBg,
+      text: '电脑设备',
     },
-    bg: styles.themeBg,
-    text: '电脑设备',
-  },
-  {
-    icon: {
-      name: 'shopping-cart',
-      type: 'font-awesome',
+    {
+      icon: {
+        name: 'shopping-cart',
+        type: 'font-awesome',
+      },
+      bg: styles.themeBg,
+      text: '日用品',
     },
-    bg: styles.themeBg,
-    text: '日用品',
-  },
-  {
-    icon: {
-      name: 'hamburger',
-      type: 'font-awesome-5',
+    {
+      icon: {
+        name: 'hamburger',
+        type: 'font-awesome-5',
+      },
+      bg: styles.themeBg,
+      text: '食品',
     },
-    bg: styles.themeBg,
-    text: '食品',
-  },
-  {
-    icon: {
-      name: 'shopping-bag',
-      type: 'font-awesome-5',
+  ],
+  [
+    {
+      icon: {
+        name: 'shopping-bag',
+        type: 'font-awesome-5',
+      },
+      bg: styles.themeBg,
+      text: '包包',
     },
-    bg: styles.themeBg,
-    text: '包包',
-  },
-  {
-    icon: {
-      name: 'shoe-sneaker',
-      type: 'material-community',
+    {
+      icon: {
+        name: 'shoe-sneaker',
+        type: 'material-community',
+      },
+      bg: styles.themeBg,
+      text: '鞋子',
     },
-    bg: styles.themeBg,
-    text: '鞋子',
-  },
-  {
-    icon: {
-      name: 'tags',
-      type: 'ant-design',
+    {
+      icon: {
+        name: 'tags',
+        type: 'ant-design',
+      },
+      bg: styles.themeBg,
+      text: '衣物',
     },
-    bg: styles.themeBg,
-    text: '衣物',
-  },
-  {
-    icon: {
-      name: 'baseball-ball',
-      type: 'font-awesome-5',
+    {
+      icon: {
+        name: 'baseball-ball',
+        type: 'font-awesome-5',
+      },
+      bg: styles.themeBg,
+      text: '运动',
     },
-    bg: styles.themeBg,
-    text: '运动',
-  },
+  ],
 ];
 const list2 = [
   {

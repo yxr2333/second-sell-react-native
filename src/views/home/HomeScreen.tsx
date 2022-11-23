@@ -3,6 +3,7 @@ import { Avatar, Button, Card, Icon, SearchBar, Text } from '@rneui/themed';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import useIcons from '../../hooks/useIcons';
+import { IconItem } from '../../types';
 
 type Props = NativeStackScreenProps<any, any>;
 const SignInScreen: React.FC<Props> = ({ navigation }) => {
@@ -10,7 +11,7 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
   const updateSearch = (text: any) => {
     setSearch(text);
   };
-  const icons = useIcons();
+  const icons = useIcons() as IconItem[][];
   const handlePressIcon = (title?: string) => {
     console.log(title);
 
@@ -30,7 +31,25 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
       />
       <ScrollView style={{ marginBottom: 100 }}>
         <View style={styles.avatarView}>
-          {icons?.map((item, index) => (
+          {icons.map((row, rIndex) => (
+            <View key={rIndex} style={styles.avatarViewRow}>
+              {row.map((item, index) => (
+                <View
+                  key={index}
+                  style={styles.avatarWrapper}
+                  onTouchStart={() => handlePressIcon(item.text)}>
+                  <Avatar
+                    size={64}
+                    rounded
+                    icon={item.icon}
+                    containerStyle={item.bg}
+                  />
+                  <Text style={{ marginTop: 8 }}>{item.text}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
+          {/* {icons?.map((item, index) => (
             <View
               key={index}
               style={styles.avatarWrapper}
@@ -43,7 +62,7 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
               />
               <Text style={{ marginTop: 8 }}>{item.text}</Text>
             </View>
-          ))}
+          ))} */}
         </View>
         <View>
           {Array.from({ length: 5 }).map((_, index) => (
@@ -94,9 +113,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '100%',
     backgroundColor: '#fff',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    // flexWrap: 'wrap',
+  },
+  avatarViewRow: {
+    width: '100%',
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    flexWrap: 'wrap',
   },
   purpleBg: {
     backgroundColor: '#9700b9',

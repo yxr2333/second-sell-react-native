@@ -20,7 +20,7 @@ const SwiperView = () => {
         <Image
           style={{ width: Dimensions.get('window').width, height: '100%' }}
           source={{
-            uri: 'http://rk8lx4oxj.hn-bkt.clouddn.com/01217514880511ebb6edd017c2d2eca2.jpg',
+            uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/c53c811f880411ebb6edd017c2d2eca2.jpg',
           }}
         />
       </View>
@@ -28,7 +28,7 @@ const SwiperView = () => {
         <Image
           style={{ width: Dimensions.get('window').width, height: '100%' }}
           source={{
-            uri: 'http://rk8lx4oxj.hn-bkt.clouddn.com/c53c811f880411ebb6edd017c2d2eca2.jpg',
+            uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/01217514880511ebb6edd017c2d2eca2.jpg',
           }}
         />
       </View>
@@ -36,7 +36,7 @@ const SwiperView = () => {
         <Image
           style={{ width: Dimensions.get('window').width, height: '100%' }}
           source={{
-            uri: 'http://rk8lx4oxj.hn-bkt.clouddn.com/wallhaven-8ozrvj.jpg',
+            uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/wallhaven-g7ezp3.png',
           }}
         />
       </View>
@@ -104,7 +104,7 @@ const SpikeScreen: React.FC = () => {
                     size={64}
                     title="Hello"
                     source={{
-                      uri: 'http://rk8lx4oxj.hn-bkt.clouddn.com/IMG_3335(20220202-231216).JPG',
+                      uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/IMG_5138.JPG',
                     }}
                   />
                   <ListItem.Content>

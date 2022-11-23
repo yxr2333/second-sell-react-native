@@ -2,15 +2,19 @@ import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { Avatar, BottomSheet, Card, Icon, ListItem, Text } from '@rneui/themed';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SettingMenu from '../../components/SettingMenu';
 import useIcons from '../../hooks/useIcons';
 import useOperItems from '../../hooks/useOperItems';
-import { selectUserToken } from '../../store/userSlice';
+import { logout, selectUserInfo, selectUserToken } from '../../store/userSlice';
+import { IconItem } from '../../types';
+import MessageUtil from '../../utils/message';
 
 const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
-  const icons = useIcons(2);
+  const icons = useIcons(2) as IconItem[];
   const token = useSelector(selectUserToken);
+  const userInfo = useSelector(selectUserInfo);
+  const dispatch = useDispatch();
   const [isVisible, setIsVisible] = React.useState(false);
   const list = useOperItems(setIsVisible);
   const handlePress = () => {
@@ -24,6 +28,8 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
   const handlePressOper = (name?: string) => {
     if (name) {
       if (name === 'logout') {
+        dispatch(logout());
+        MessageUtil('退出成功');
       } else {
         handleNavigate(name);
       }
@@ -31,7 +37,6 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
     setIsVisible(false);
   };
   React.useEffect(() => {
-    console.log(navigation);
     navigation.setOptions({
       headerRight: () => (
         <Icon
@@ -78,7 +83,7 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
             size={80}
             rounded
             source={{
-              uri: 'https://insurence-1304011999.cos.ap-shanghai.myqcloud.com/IMG_4071(20220408-120548).JPG',
+              uri: userInfo.avatar,
             }}
           />
         ) : (
@@ -96,8 +101,10 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
         )}
         {token ? (
           <View style={styles.infoStyle}>
-            <Text style={styles.nameStyle}>icecreamQAQ</Text>
-            <Text style={styles.nickNameStyle}>会员名: icecreamQAQ</Text>
+            <Text style={styles.nameStyle}>{userInfo.username}</Text>
+            <Text style={styles.nickNameStyle}>
+              会员名: {userInfo.username}
+            </Text>
           </View>
         ) : (
           <Text style={styles.nameStyle}>请先登录</Text>

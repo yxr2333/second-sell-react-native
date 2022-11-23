@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
 import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 
 const avatar_url =
-  'http://rk8lx4oxj.hn-bkt.clouddn.com/IMG_3335(20220202-231216).JPG';
+  'https://android-class.oss-cn-hangzhou.aliyuncs.com/IMG_5138.JPG';
 const SettingMenu: React.FC = () => {
   return (
     <ListItem

@@ -4,7 +4,9 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Toast from 'react-native-root-toast';
 import { useDispatch } from 'react-redux';
-import { save } from '../../store/userSlice';
+import { doLogin } from '../../api/user';
+import { login } from '../../store/userSlice';
+import { UserLoginResult } from '../../types/response/developResponse';
 
 const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
   const [username, setUsername] = React.useState('');
@@ -19,32 +21,38 @@ const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
     setTitle('注册');
   };
   const handleLogin = () => {
-    console.log(username, password);
     let toast: any = null;
-    if (username === 'yxr' && password === '123456') {
-      toast = Toast.show('登录成功', {
-        duration: 2000,
-        animation: true,
-        shadow: true,
-        hideOnPress: true,
-        delay: 0,
-        position: Toast.positions.CENTER,
-      });
-      const userInfo = {
-        id: 1,
-        token: 'user1001',
-        username,
-      };
-      dispatch(save(userInfo));
-      setTimeout(() => {
-        navigation.goBack();
-      }, 2000);
-    } else {
-      toast = Toast.show('登录失败，请检查用户名和密码是否正确', {
-        duration: 2000,
-        position: Toast.positions.CENTER,
-      });
-    }
+    let param = { username, password };
+    doLogin(param).then(resp => {
+      if (resp) {
+        console.log(resp);
+        //@ts-ignore
+        const { code, data, msg } = resp as UserLoginResult;
+        if (code === 200) {
+          toast = Toast.show('登录成功', {
+            duration: 2000,
+            animation: true,
+            shadow: true,
+            hideOnPress: true,
+            delay: 0,
+            position: Toast.positions.CENTER,
+          });
+          const userInfo = {
+            ...data?.baseInfo,
+            token: data?.tokenInfo.token,
+          };
+          dispatch(login(userInfo));
+          setTimeout(() => {
+            navigation.goBack();
+          }, 2000);
+        } else {
+          toast = Toast.show(msg as string, {
+            duration: 2000,
+            position: Toast.positions.CENTER,
+          });
+        }
+      }
+    });
     setTimeout(() => {
       if (toast) {
         Toast.hide(toast);

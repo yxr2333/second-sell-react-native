@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-  baseURL: 'http://10.134.244.29:5000',
+  baseURL: 'http://10.148.17.52:7080/sell',
   timeout: 50000,
 });
 
