@@ -14,12 +14,15 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
   const icons = useIcons() as IconItem[][];
   const handlePressIcon = (title?: string) => {
     console.log(title);
-
     if (title) {
       navigation.navigate('GoodsList', { title });
     }
   };
-
+  const handleSubmitEditing = () => {
+    if (search && search.length > 0) {
+      navigation.navigate('SearchDetailScreen', { keyword: search });
+    }
+  };
   return (
     <View>
       <SearchBar
@@ -27,6 +30,7 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
         style={styles.searchView}
         placeholder="请输入搜索内容..."
         value={search}
+        onSubmitEditing={handleSubmitEditing}
         onChangeText={updateSearch}
       />
       <ScrollView style={{ marginBottom: 100 }}>
@@ -49,20 +53,6 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
               ))}
             </View>
           ))}
-          {/* {icons?.map((item, index) => (
-            <View
-              key={index}
-              style={styles.avatarWrapper}
-              onTouchStart={() => handlePressIcon(item.text)}>
-              <Avatar
-                size={64}
-                rounded
-                icon={item.icon}
-                containerStyle={item.bg}
-              />
-              <Text style={{ marginTop: 8 }}>{item.text}</Text>
-            </View>
-          ))} */}
         </View>
         <View>
           {Array.from({ length: 5 }).map((_, index) => (

@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CartScreen from './CartScreen';
 
 import SignInScreen from './HomeScreen';
+import PublishScreen from './PublishScreen';
 import SettingsScreen from './SettingsScreen';
 import SpikeScreen from './SpikeScreen';
 
@@ -24,6 +25,8 @@ const MyHome = () => {
             iconName = focused ? 'pricetag' : 'pricetag-outline';
           } else if (route.name === 'Cart') {
             iconName = focused ? 'cart' : 'cart-outline';
+          } else if (route.name === 'Publish') {
+            iconName = focused ? 'add-circle' : 'add-circle-outline';
           }
           if (iconName) {
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -48,6 +51,11 @@ const MyHome = () => {
         name="Spike"
         component={SpikeScreen}
         options={{ title: '秒杀活动' }}
+      />
+      <Tab.Screen
+        name="Publish"
+        component={PublishScreen}
+        options={{ title: '发布' }}
       />
       <Tab.Screen
         name="Cart"

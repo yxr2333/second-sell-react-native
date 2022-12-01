@@ -23,4 +23,11 @@ export type UserBaseInfo = {
   token?: string;
 };
 
+export type GoodsTypeBaseInfo = {
+  id: number;
+  name: string;
+  typeLevel: number;
+};
+
 export type UserLoginResult = ApiResult<UserLoginResponse>;
+export type GetAllGoodsTypeResult = ApiResult<GoodsTypeBaseInfo[]>;

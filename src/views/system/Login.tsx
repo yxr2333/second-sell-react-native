@@ -13,7 +13,6 @@ const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
   const [password, setPassword] = React.useState('123456');
   const [title, setTitle] = React.useState('登录');
   const dispatch = useDispatch();
-
   const goRegister = () => {
     navigation.setOptions({
       title: '注册',
@@ -30,7 +29,7 @@ const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
         const { code, data, msg } = resp as UserLoginResult;
         if (code === 200) {
           toast = Toast.show('登录成功', {
-            duration: 2000,
+            duration: 1000,
             animation: true,
             shadow: true,
             hideOnPress: true,
@@ -44,7 +43,7 @@ const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
           dispatch(login(userInfo));
           setTimeout(() => {
             navigation.goBack();
-          }, 2000);
+          }, 1000);
         } else {
           toast = Toast.show(msg as string, {
             duration: 2000,

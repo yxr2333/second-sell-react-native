@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const baseURL = 'http://10.134.244.29:7080/sell';
+export const baseURL = 'http://10.148.17.52:7080/sell';
 const request = axios.create({
   baseURL,
-  timeout: 50000,
+  timeout: 5000,
 });
 request.interceptors.request.use(req => {
   console.log('request', req);

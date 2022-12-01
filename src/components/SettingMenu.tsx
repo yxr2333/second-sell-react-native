@@ -33,11 +33,9 @@ const SettingMenu: React.FC = () => {
         formData.append('file', file);
 
         uploadImage(formData)
+          .then(res => res.json())
           .then(res => {
-            if (res) {
-              console.log('文件上传成功');
-              console.log(res);
-            }
+            console.log(res);
           })
           .catch(err => {
             console.error('文件上传失败', err);

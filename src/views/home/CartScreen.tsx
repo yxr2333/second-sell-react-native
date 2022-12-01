@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   fabBtn: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 10,
     right: 0,
   },
 });

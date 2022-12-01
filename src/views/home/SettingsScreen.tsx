@@ -17,14 +17,28 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = React.useState(false);
   const list = useOperItems(setIsVisible);
+
+  /**
+   * 控制底部弹出菜单的显示与隐藏
+   */
   const handlePress = () => {
     setIsVisible(true);
   };
+
+  /**
+   * 控制路由的跳转
+   * @param routeName 跳转的路由名
+   */
   const handleNavigate = (routeName?: string) => {
     if (routeName) {
       navigation.navigate(routeName);
     }
   };
+
+  /**
+   * 控制底部弹出菜单的点击事件
+   * @param name 底部操作菜单的名称
+   */
   const handlePressOper = (name?: string) => {
     if (name) {
       if (name === 'logout') {
@@ -40,6 +54,8 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
     }
     setIsVisible(false);
   };
+
+  // 修改顶部菜单右边按钮的功能
   React.useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -54,6 +70,7 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
       ),
     });
   });
+
   return (
     <ScrollView style={styles.wrapper}>
       <BottomSheet

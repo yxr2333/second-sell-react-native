@@ -21,6 +21,12 @@ export interface StackParamList extends ParamListBase {
   AuthChecker: {
     children: React.ReactNode;
   };
+  EditAddressScreen: {
+    addressId: number;
+  };
+  SearchDetailScreen: {
+    keyword?: string;
+  };
 }
 
 export type IconItem = {

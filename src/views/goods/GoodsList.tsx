@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Toast from 'react-native-root-toast';
 import WaterfallFlow from 'react-native-waterfall-flow';
+import GoodsFilter from '../../components/GoodsFilter';
 import useGoodsList from '../../hooks/useGoodsList';
 import { StackParamList } from '../../types';
 
@@ -50,9 +51,18 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
       });
     }
   });
+  /**
+   * 更新搜索框中的文字
+   * @param text 输入的文字
+   */
   const updateSearch = (text: string) => {
     setSearch(text);
   };
+
+  /**
+   * 查看商品详情
+   * @param id 商品id
+   */
   const handleSeeDetail = (id: number) => {
     navigation.navigate('GoodsDetails', { goodsId: id });
   };
@@ -89,13 +99,16 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
       data={goodsList}
       numColumns={2}
       ListHeaderComponent={
-        <SearchBar
-          platform="android"
-          style={styles.searchView}
-          placeholder="请输入搜索内容..."
-          value={search}
-          onChangeText={updateSearch}
-        />
+        <React.Fragment>
+          <SearchBar
+            platform="android"
+            style={styles.searchView}
+            placeholder="请输入搜索内容..."
+            value={search}
+            onChangeText={updateSearch}
+          />
+          <GoodsFilter />
+        </React.Fragment>
       }
       renderItem={({ item, index, columnIndex }) => {
         return (
