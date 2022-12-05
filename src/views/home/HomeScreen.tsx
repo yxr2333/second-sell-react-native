@@ -2,12 +2,28 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Avatar, Button, Card, Icon, SearchBar, Text } from '@rneui/themed';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { randomGetGoods } from '../../api/goods';
 import useIcons from '../../hooks/useIcons';
 import { IconItem } from '../../types';
+import {
+  GetRandomGoodsResult,
+  GoodsSimpleInfo,
+} from '../../types/response/developResponse';
 
 type Props = NativeStackScreenProps<any, any>;
 const SignInScreen: React.FC<Props> = ({ navigation }) => {
   const [search, setSearch] = React.useState('');
+  const [goods, setGoods] = React.useState<GoodsSimpleInfo[]>([]);
+  React.useEffect(() => {
+    randomGetGoods(5).then(res => {
+      //@ts-ignore
+      const { code, data } = res as GetRandomGoodsResult;
+      if (code === 200 && data) {
+        console.log(data);
+        setGoods(data);
+      }
+    });
+  }, []);
   const updateSearch = (text: any) => {
     setSearch(text);
   };
@@ -55,21 +71,21 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
           ))}
         </View>
         <View>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {goods.map((item, index) => (
             <Card key={index}>
-              <Card.Title>HELLO WORLD</Card.Title>
+              <Card.Title>{item.name}</Card.Title>
               <Card.Divider />
               <Card.Image
                 style={{ padding: 0, width: '100%' }}
                 source={{
-                  uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/20221121185402.png',
+                  uri: item.cover,
                 }}
               />
-              <Text style={{ marginBottom: 10 }}>
-                The idea with React Native Elements is more about component
-                structure than actual design.
-              </Text>
+              <Text style={{ marginBottom: 10 }}>{item.description}</Text>
               <Button
+                onPress={() =>
+                  navigation.navigate('GoodsDetails', { goodsId: item.id })
+                }
                 icon={
                   <Icon
                     name="code"

@@ -1,32 +1,43 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { lightColors, PricingCard } from '@rneui/themed';
 import * as React from 'react';
 import { ScrollView } from 'react-native';
-type PricingCardComponentProps = {};
-const Pricing: React.FC<PricingCardComponentProps> = () => {
+import { getRecentSpike } from '../api/spike';
+import { SpikeInfo } from '../types/response/developResponse';
+type PricingCardComponentProps = NativeStackScreenProps<any, any>;
+const Pricing: React.FC<PricingCardComponentProps> = ({ navigation }) => {
+  const [spikes, setSpikes] = React.useState<SpikeInfo[]>([]);
+  React.useEffect(() => {
+    getRecentSpike(5).then(res => {
+      //@ts-ignore
+      const { code, data } = res as GetRecentSpikeResult;
+      if (code === 200 && data) {
+        console.log(data);
+        setSpikes(data);
+      }
+    });
+  }, []);
+  const handleButtonPress = (spikeId: number) => {
+    console.log('ok', spikeId);
+    navigation.push('SpikeDetailScreen', { spikeId });
+  };
   return (
     <>
       <ScrollView style={{ width: '100%' }}>
-        <PricingCard
-          color={lightColors.primary}
-          title="Free"
-          price="$0"
-          info={['1 User', 'Basic Support', 'All Core Features']}
-          button={{ title: ' GET STARTED', icon: 'flight-takeoff' }}
-        />
-        <PricingCard
-          color={lightColors.secondary}
-          title="Starter"
-          price="$19"
-          info={['10 Users', 'Basic Support', 'All Core Features']}
-          button={{ title: ' GET STARTED', icon: 'flight-takeoff' }}
-        />
-        <PricingCard
-          color={lightColors.secondary}
-          title="Enterprise"
-          price="$49"
-          info={['100 Users', 'One on One Support', 'All Core Features']}
-          button={{ title: ' GET STARTED', icon: 'flight-takeoff' }}
-        />
+        {spikes.map((item, index) => (
+          <PricingCard
+            key={index}
+            color={lightColors.primary}
+            title={item.id.toString()}
+            price={item.name}
+            info={[`开始日期：${item.startDate}`, `结束日期：${item.endDate}`]}
+            button={{
+              title: '立即查看',
+              icon: 'flight-takeoff',
+              onPress: () => handleButtonPress(item.id),
+            }}
+          />
+        ))}
       </ScrollView>
     </>
   );

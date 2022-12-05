@@ -1,37 +1,77 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Avatar, FAB, Icon, ListItem, Text } from '@rneui/themed';
+import { Avatar, Button, FAB, Icon, ListItem, Text } from '@rneui/themed';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { findAddressByUserId } from '../../../api/address';
+import { selectUserId } from '../../../store/userSlice';
+import {
+  AddressInfo,
+  GetAddressByUserIdResult,
+} from '../../../types/response/developResponse';
 
 const AddressControlPanel: React.FC<NativeStackScreenProps<any, any>> = ({
   navigation,
 }) => {
-  const handleEditAddress = (id: number) => {
+  const userId = useSelector(selectUserId) as number;
+
+  const refresh = () => {
+    findAddressByUserId(userId).then((res: any) => {
+      const { code, data } = res as GetAddressByUserIdResult;
+      if (code === 200 && data) {
+        console.info(data);
+        setAddressList(data);
+      }
+    });
+  };
+
+  navigation.setOptions({
+    headerRight: () => (
+      <Button
+        onPress={refresh}
+        type="clear"
+        title="刷新"
+        titleStyle={{ color: '#fff', fontSize: 16 }}
+      />
+    ),
+  });
+  const [addressList, setAddressList] = React.useState<AddressInfo[]>([]);
+  const handleEditAddress = (id?: number) => {
     console.info(id);
-    navigation.push('EditAddressScreen', { addressId: id });
+    navigation.push('EditAddressScreen', { addressId: id, refresh });
   };
   const handleAddAddress = () => {
-    navigation.push('AddAddressScreen');
+    navigation.push('AddAddressScreen', { refresh });
   };
+  React.useEffect(() => {
+    console.log('userId', userId);
+    findAddressByUserId(userId).then((res: any) => {
+      const { code, data } = res as GetAddressByUserIdResult;
+      if (code === 200 && data) {
+        console.info(data);
+        setAddressList(data);
+      }
+    });
+  }, [userId]);
   return (
     // <AuthChecker navigation={navigation}>
     <View style={styles.container}>
       <ScrollView>
-        {Array.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12).map((_, index) => (
+        {addressList.map((address, index) => (
           <ListItem key={index}>
             <Avatar
               rounded
-              title="i"
+              title={address.name?.charAt(0)}
               titleStyle={{ color: '#fff', fontWeight: 'bold' }}
               containerStyle={{ backgroundColor: '#83cbac' }}
             />
             <ListItem.Content>
               <ListItem.Title>
-                <Text style={styles.name}>icecream&nbsp;&nbsp;</Text>
-                <Text style={styles.phone}>17786170105</Text>
+                <Text style={styles.name}>{address.name}&nbsp;&nbsp;</Text>
+                <Text style={styles.phone}>{address.phone}</Text>
               </ListItem.Title>
               <ListItem.Subtitle style={styles.address}>
-                湖北省宜昌市西陵区大学路8号
+                {address.address}
               </ListItem.Subtitle>
             </ListItem.Content>
             <ListItem.Content right>
@@ -39,7 +79,7 @@ const AddressControlPanel: React.FC<NativeStackScreenProps<any, any>> = ({
                 name="edit"
                 type="feather"
                 iconStyle={{ color: '#010' }}
-                onPress={() => handleEditAddress(index)}
+                onPress={() => handleEditAddress(address.id)}
               />
             </ListItem.Content>
           </ListItem>

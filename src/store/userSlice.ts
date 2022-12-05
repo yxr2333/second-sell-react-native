@@ -27,6 +27,7 @@ export const { increment, login, logout } = userSlice.actions;
 
 export const selectCount = (state: any) => state.user.value;
 export const selectUserToken = (state: any) => state.user.userInfo.token;
+export const selectUserId = (state: any) => state.user.userInfo.id;
 export const selectUserInfo = (state: any) =>
   state.user.userInfo as UserBaseInfo;
 

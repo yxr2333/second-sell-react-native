@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = 'http://10.148.17.52:7080/sell';
+export const baseURL = 'http://192.168.2.11:7080/sell';
 const request = axios.create({
   baseURL,
   timeout: 5000,

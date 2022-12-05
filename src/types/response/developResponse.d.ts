@@ -29,5 +29,29 @@ export type GoodsTypeBaseInfo = {
   typeLevel: number;
 };
 
+export type GoodsSimpleInfo = {
+  id: number;
+  name: string;
+  description: string;
+  cover: string;
+};
+export type SpikeInfo = {
+  id: number;
+  sid: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+};
+export type AddressInfo = {
+  id: number;
+  address: string;
+  name: string;
+  phone: string;
+};
+
 export type UserLoginResult = ApiResult<UserLoginResponse>;
 export type GetAllGoodsTypeResult = ApiResult<GoodsTypeBaseInfo[]>;
+export type GetRandomGoodsResult = ApiResult<GoodsSimpleInfo[]>;
+export type GetRecentSpikeResult = ApiResult<SpikeInfo[]>;
+export type GetAddressByUserIdResult = ApiResult<AddressInfo[]>;
+export type GetAddressByIdResult = ApiResult<AddressInfo>;

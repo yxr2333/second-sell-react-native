@@ -2,6 +2,7 @@ import { Avatar, Image, ListItem, Tab, TabView, Text } from '@rneui/themed';
 import * as React from 'react';
 import Pricing from '../../components/Pricing';
 
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Dimensions, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
@@ -43,7 +44,8 @@ const SwiperView = () => {
     </Swiper>
   );
 };
-const SpikeScreen: React.FC = () => {
+type Props = NativeStackScreenProps<any, any>;
+const SpikeScreen: React.FC<Props> = ({ navigation, route }) => {
   const [index, setIndex] = React.useState(0);
   const [w, setW] = React.useState(0);
   const [h, setH] = React.useState(0);
@@ -86,7 +88,7 @@ const SpikeScreen: React.FC = () => {
         disableSwipe={false}>
         <TabView.Item>
           <View style={{ width: w }}>
-            <Pricing />
+            <Pricing navigation={navigation} route={route} />
           </View>
         </TabView.Item>
         <TabView.Item>

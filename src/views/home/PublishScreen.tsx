@@ -25,9 +25,6 @@ const baseUrl =
 const { width } = Dimensions.get('window');
 const PublishScreen: React.FC = () => {
   React.useEffect(() => {
-    setTimeout(() => {
-      setW(width);
-    });
     getAllGoodsType().then(res => {
       if (res) {
         //@ts-ignore
@@ -39,6 +36,12 @@ const PublishScreen: React.FC = () => {
           }
         }
       }
+    });
+  }, []);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setW(width);
     });
   });
   const [tabIndex, setTabIndex] = React.useState(0);

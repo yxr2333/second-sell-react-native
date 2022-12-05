@@ -25,7 +25,7 @@ const MyHome = () => {
             iconName = focused ? 'pricetag' : 'pricetag-outline';
           } else if (route.name === 'Cart') {
             iconName = focused ? 'cart' : 'cart-outline';
-          } else if (route.name === 'Publish') {
+          } else if (route.name === 'PublishScreen') {
             iconName = focused ? 'add-circle' : 'add-circle-outline';
           }
           if (iconName) {
@@ -53,7 +53,7 @@ const MyHome = () => {
         options={{ title: '秒杀活动' }}
       />
       <Tab.Screen
-        name="Publish"
+        name="PublishScreen"
         component={PublishScreen}
         options={{ title: '发布' }}
       />

@@ -23,9 +23,16 @@ export interface StackParamList extends ParamListBase {
   };
   EditAddressScreen: {
     addressId: number;
+    refresh: () => void;
+  };
+  AddAddressScreen: {
+    refresh: () => void;
   };
   SearchDetailScreen: {
     keyword?: string;
+  };
+  SpikeDetailScreen: {
+    spikeId: number;
   };
 }
 

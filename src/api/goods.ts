@@ -6,3 +6,13 @@ export function getAllGoodsType() {
     url: '/goodsType/getAll',
   });
 }
+
+export function randomGetGoods(size: number) {
+  return request({
+    method: 'get',
+    url: '/goods/random',
+    params: {
+      size,
+    },
+  });
+}

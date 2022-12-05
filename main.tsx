@@ -1,7 +1,6 @@
 import * as eva from '@eva-design/eva';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button } from '@rneui/themed';
 import { ApplicationProvider } from '@ui-kitten/components';
 import React from 'react';
 import 'react-native-gesture-handler';
@@ -15,6 +14,7 @@ import Home from './src/views/home/Home';
 import ModalScreen from './src/views/ModalScreen';
 import SearchDetailScreen from './src/views/search/SearchDetailScreen';
 import Settlement from './src/views/settlement/SettleMentScreen';
+import SpikeDetailScreen from './src/views/spike/SpikeDetailScreen';
 import AddAddressScreen from './src/views/system/address/AddAddressScreen';
 import AddressControl from './src/views/system/address/AddressControlPanel';
 import EditAddressScreen from './src/views/system/address/EditAddressScreen';
@@ -62,8 +62,12 @@ const main: React.FC = () => {
                   />
                   <Stack.Screen
                     name="SearchDetailScreen"
-                    component={SearchDetailScreen}
+                    component={SearchDetailScreen as any}
                     options={{ title: '搜索结果' }}
+                  />
+                  <Stack.Screen
+                    name="SpikeDetailScreen"
+                    component={SpikeDetailScreen as any}
                   />
                   <Stack.Group>
                     <Stack.Screen
@@ -121,13 +125,6 @@ const main: React.FC = () => {
                       component={AddressControl}
                       options={{
                         title: '地址管理',
-                        headerRight: () => (
-                          <Button
-                            type="clear"
-                            title="管理"
-                            titleStyle={{ color: '#fff', fontSize: 16 }}
-                          />
-                        ),
                       }}
                     />
                     <Stack.Screen
@@ -135,13 +132,6 @@ const main: React.FC = () => {
                       component={EditAddressScreen as any}
                       options={{
                         title: '编辑收货地址',
-                        headerRight: () => (
-                          <Button
-                            type="clear"
-                            title="删除"
-                            titleStyle={{ color: '#fff', fontSize: 20 }}
-                          />
-                        ),
                       }}
                     />
                     <Stack.Screen
