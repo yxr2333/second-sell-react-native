@@ -3,9 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ApplicationProvider } from '@ui-kitten/components';
 import React from 'react';
+import FlashMessage from 'react-native-flash-message';
+
 import 'react-native-gesture-handler';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 import store from './src/store/store';
 import GoodsDetail from './src/views/goods/GoodsDetail';
@@ -27,7 +30,6 @@ import PersonalInfo from './src/views/system/profile/PersonalInfo';
 import ResetPasswordScreen from './src/views/system/secure/ResetPasswordScreen';
 import ResetPhoneScreen from './src/views/system/secure/ResetPhoneScreen';
 import SecureDetail from './src/views/system/secure/SecureDetail';
-
 const params = {
   params: {
     text: 'hello',
@@ -41,6 +43,8 @@ const main: React.FC = () => {
       <Provider store={store}>
         <RootSiblingParent>
           <NavigationContainer>
+            <Toast />
+            <FlashMessage position="top" />
             <ApplicationProvider {...eva} theme={eva.light}>
               <Stack.Navigator
                 initialRouteName="index"
@@ -156,7 +160,7 @@ const main: React.FC = () => {
                     <Stack.Screen
                       name="ResetPhoneScreen"
                       component={ResetPhoneScreen}
-                      options={{ title: '修改账户密码' }}
+                      options={{ title: '修改绑定电话' }}
                     />
                   </Stack.Group>
                 </Stack.Group>

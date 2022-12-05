@@ -16,18 +16,22 @@ export const userSlice = createSlice({
       // Object.assign(state.userInfo, {});
       state.userInfo = {} as UserBaseInfo;
     },
-
+    updateEmail: (state, action) => {
+      state.userInfo.email = action.payload;
+      console.log(state.userInfo);
+    },
     increment: state => {
       state.value += 1;
     },
   },
 });
 
-export const { increment, login, logout } = userSlice.actions;
+export const { increment, login, logout, updateEmail } = userSlice.actions;
 
 export const selectCount = (state: any) => state.user.value;
 export const selectUserToken = (state: any) => state.user.userInfo.token;
 export const selectUserId = (state: any) => state.user.userInfo.id;
+export const selectUserEmail = (state: any) => state.user.userInfo.email;
 export const selectUserInfo = (state: any) =>
   state.user.userInfo as UserBaseInfo;
 

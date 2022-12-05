@@ -11,6 +11,7 @@ export default function MessageUtil(msg?: string) {
     hideOnPress: true,
     delay: 0,
     position: Toast.positions.CENTER,
+    containerStyle: { zIndex: 9999 },
   });
   setTimeout(() => {
     if (toast) {

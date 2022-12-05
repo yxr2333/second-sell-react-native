@@ -21,6 +21,7 @@ export type UserBaseInfo = {
   email?: string;
   avatar?: string;
   token?: string;
+  phone?: string;
 };
 
 export type GoodsTypeBaseInfo = {
@@ -48,6 +49,10 @@ export type AddressInfo = {
   name: string;
   phone: string;
 };
+export type SendCodeEmailInfo = {
+  verifyCode: string;
+  requestKey: string;
+};
 
 export type UserLoginResult = ApiResult<UserLoginResponse>;
 export type GetAllGoodsTypeResult = ApiResult<GoodsTypeBaseInfo[]>;
@@ -55,3 +60,4 @@ export type GetRandomGoodsResult = ApiResult<GoodsSimpleInfo[]>;
 export type GetRecentSpikeResult = ApiResult<SpikeInfo[]>;
 export type GetAddressByUserIdResult = ApiResult<AddressInfo[]>;
 export type GetAddressByIdResult = ApiResult<AddressInfo>;
+export type SendCodeByEmailResult = ApiResult<SendCodeEmailInfo>;

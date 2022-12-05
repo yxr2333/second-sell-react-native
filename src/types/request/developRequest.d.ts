@@ -16,3 +16,11 @@ export type UpdateAddressParam = {
   phone: string;
   address: string;
 };
+
+export type UpdateUserLoginPasswordParam = {
+  userId: number;
+  oldPassword: string;
+  newPassword: string;
+  requestKey: string;
+  code: string;
+};
