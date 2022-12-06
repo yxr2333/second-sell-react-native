@@ -12,6 +12,7 @@ export interface StackParamList extends ParamListBase {
     name: string;
   };
   GoodsList: {
+    typeId: number;
     title: string;
   };
   GoodsDetails: {
@@ -37,6 +38,7 @@ export interface StackParamList extends ParamListBase {
 }
 
 export type IconItem = {
+  id?: number;
   icon: {
     name: string;
     type: string;

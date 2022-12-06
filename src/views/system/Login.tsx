@@ -10,7 +10,7 @@ import { UserLoginResult } from '../../types/response/developResponse';
 
 const Login: React.FC<NativeStackScreenProps<any, any>> = ({ navigation }) => {
   const [username, setUsername] = React.useState('icecream');
-  const [password, setPassword] = React.useState('yu020506');
+  const [password, setPassword] = React.useState('123');
   const [title, setTitle] = React.useState('登录');
   const dispatch = useDispatch();
   const goRegister = () => {

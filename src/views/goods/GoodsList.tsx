@@ -3,33 +3,46 @@ import { Card, Icon, SearchBar, Text } from '@rneui/themed';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Toast from 'react-native-root-toast';
+import { showMessage } from 'react-native-flash-message';
 import WaterfallFlow from 'react-native-waterfall-flow';
+import { getGoodsListByTypeId } from '../../api/goods';
 import GoodsFilter from '../../components/GoodsFilter';
-import useGoodsList from '../../hooks/useGoodsList';
 import { StackParamList } from '../../types';
+import { GetGoodsByTypeResult } from '../../types/response/developResponse';
 
 type Props = NativeStackScreenProps<StackParamList, 'GoodsList'>;
 // 获取屏幕高度
 const GoodsList: React.FC<Props> = ({ route, navigation }) => {
-  const { title } = route.params;
-  const [search, setSearch] = React.useState('');
-  const [refreshing] = React.useState(false);
-  const waterFlowRef = React.useRef<WaterfallFlow>(null);
-  const [hasMore, setHasMore] = React.useState(true);
-  const loadData = () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    return useGoodsList().map(item => {
-      return {
-        ...item,
-        height: Math.floor(Math.random() * 300 + 100),
-        image: `${item.image}?${Math.random()}`,
-      };
+  const { title, typeId } = route.params;
+  const [page, setPage] = React.useState(1);
+  const [size] = React.useState(10);
+  const [goods, setGoods] = React.useState<any[]>([]);
+  React.useEffect(() => {
+    getGoodsListByTypeId(typeId, page, size).then((res: any) => {
+      const { code, data } = res as GetGoodsByTypeResult;
+      if (code === 200 && data) {
+        // 给每个商品添加一个随机高度
+        const dataList = data.data.map(item => {
+          return {
+            ...item,
+            height: Math.floor(Math.random() * 300 + 100),
+          };
+        });
+        setGoods(dataList);
+        showMessage({
+          message: '加载成功',
+          type: 'success',
+        });
+      }
     });
-  };
+  }, [page, size, typeId]);
+  const [search, setSearch] = React.useState('');
+  const [refreshing, setRefreshing] = React.useState(false);
+  const waterFlowRef = React.useRef<WaterfallFlow>(null);
 
-  const [goodsList, setGoodsList] = React.useState(loadData);
-
+  /**
+   * 设置标题和右上角的功能按键
+   */
   useEffect(() => {
     if (title) {
       navigation.setOptions({
@@ -67,25 +80,55 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
     navigation.navigate('GoodsDetails', { goodsId: id });
   };
   const handleReachEnd = () => {
-    console.log('reach end');
-    if (hasMore === false) {
-      Toast.show('没有更多了', {
-        duration: 1500,
-        position: Toast.positions.CENTER,
-        animation: true,
-        shadow: true,
-        delay: 0,
-      });
-    } else {
-      setGoodsList([...goodsList, ...loadData()]);
-      setHasMore(false);
-    }
+    getGoodsListByTypeId(typeId, page + 1, size).then((res: any) => {
+      const { code, data } = res as GetGoodsByTypeResult;
+      if (code === 200 && data) {
+        const { totalNum, totalPage } = data;
+        if (totalNum <= totalPage * size) {
+          showMessage({
+            message: '没有更多数据了',
+            type: 'warning',
+          });
+          return;
+        }
+        // 给每个商品添加一个随机高度
+        const dataList = data.data.map(item => {
+          return {
+            ...item,
+            height: Math.floor(Math.random() * 300 + 100),
+          };
+        });
+        setPage(page + 1);
+        setGoods(dataList);
+        showMessage({
+          message: '加载成功',
+          type: 'success',
+        });
+      }
+    });
   };
-  const handleRefresh = () => {
-    setTimeout(() => {
-      console.log('refresh');
-    }, 3000);
-  };
+
+  const handleRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getGoodsListByTypeId(typeId, page, size).then((res: any) => {
+      const { code, data } = res as GetGoodsByTypeResult;
+      if (code === 200 && data) {
+        // 给每个商品添加一个随机高度
+        const dataList = data.data.map(item => {
+          return {
+            ...item,
+            height: Math.floor(Math.random() * 300 + 100),
+          };
+        });
+        setGoods(dataList);
+        setRefreshing(false);
+        showMessage({
+          message: '加载成功',
+          type: 'success',
+        });
+      }
+    });
+  }, [page, size, typeId]);
   return (
     // @ts-ignore
     <WaterfallFlow
@@ -96,7 +139,7 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
       onRefresh={handleRefresh}
       style={styles.container}
       initialNumToRender={4}
-      data={goodsList}
+      data={goods}
       numColumns={2}
       ListHeaderComponent={
         <React.Fragment>
@@ -117,11 +160,11 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
             containerStyle={styles.cardContainer}>
             <Card.Image
               onPress={() => handleSeeDetail(item.id)}
-              source={{ uri: item.image }}
+              source={{ uri: item.cover }}
               style={{ height: item.height }}
             />
             <View>
-              <Text style={styles.goodsDesc}>{item.desc}</Text>
+              <Text style={styles.goodsDesc}>{item.description}</Text>
               <Text style={styles.priceText}>
                 ￥
                 <Text style={{ fontSize: 24, color: 'red' }}>{item.price}</Text>
@@ -143,6 +186,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   container: {
+    height: '100%',
     marginBottom: 10,
   },
   priceText: {

@@ -28,10 +28,10 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
     setSearch(text);
   };
   const icons = useIcons() as IconItem[][];
-  const handlePressIcon = (title?: string) => {
+  const handlePressIcon = (title?: string, typeId?: number) => {
     console.log(title);
     if (title) {
-      navigation.navigate('GoodsList', { title });
+      navigation.navigate('GoodsList', { title, typeId });
     }
   };
   const handleSubmitEditing = () => {
@@ -57,7 +57,7 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
                 <View
                   key={index}
                   style={styles.avatarWrapper}
-                  onTouchStart={() => handlePressIcon(item.text)}>
+                  onTouchStart={() => handlePressIcon(item.text, item.id)}>
                   <Avatar
                     size={64}
                     rounded

@@ -34,6 +34,7 @@ export default function useIcons(
 const list1 = [
   [
     {
+      id: 2,
       icon: {
         name: 'phone',
         type: 'font-awesome',
@@ -42,6 +43,7 @@ const list1 = [
       text: '手机',
     },
     {
+      id: 7,
       icon: {
         name: 'laptop',
         type: 'font-awesome',
@@ -50,6 +52,7 @@ const list1 = [
       text: '电脑设备',
     },
     {
+      id: 9,
       icon: {
         name: 'shopping-cart',
         type: 'font-awesome',
@@ -58,6 +61,7 @@ const list1 = [
       text: '日用品',
     },
     {
+      id: 10,
       icon: {
         name: 'hamburger',
         type: 'font-awesome-5',
@@ -68,6 +72,7 @@ const list1 = [
   ],
   [
     {
+      id: 12,
       icon: {
         name: 'shopping-bag',
         type: 'font-awesome-5',
@@ -76,6 +81,7 @@ const list1 = [
       text: '包包',
     },
     {
+      id: 13,
       icon: {
         name: 'shoe-sneaker',
         type: 'material-community',
@@ -84,6 +90,7 @@ const list1 = [
       text: '鞋子',
     },
     {
+      id: 14,
       icon: {
         name: 'tags',
         type: 'ant-design',
@@ -92,6 +99,7 @@ const list1 = [
       text: '衣物',
     },
     {
+      id: 15,
       icon: {
         name: 'baseball-ball',
         type: 'font-awesome-5',

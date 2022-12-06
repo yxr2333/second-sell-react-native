@@ -1,11 +1,10 @@
-import { Avatar, Button, ListItem } from '@rneui/themed';
+import { Button } from '@rneui/themed';
 import * as React from 'react';
 import { Platform, View } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import LinearGradient from 'react-native-linear-gradient'; // Only if no expo
-import TouchableScale from 'react-native-touchable-scale'; // https://github.com/kohver/react-native-touchable-scale
 import { uploadImage } from '../api/common';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const avatar_url =
   'https://android-class.oss-cn-hangzhou.aliyuncs.com/IMG_5138.JPG';
 const SettingMenu: React.FC = () => {
@@ -48,7 +47,7 @@ const SettingMenu: React.FC = () => {
   };
   return (
     <View>
-      <ListItem
+      {/* <ListItem
         style={{ marginTop: 10 }}
         Component={TouchableScale}
         linearGradientProps={{
@@ -68,7 +67,7 @@ const SettingMenu: React.FC = () => {
           </ListItem.Subtitle>
         </ListItem.Content>
         <ListItem.Chevron color="white" />
-      </ListItem>
+      </ListItem> */}
       <Button
         containerStyle={{
           marginTop: 10,
