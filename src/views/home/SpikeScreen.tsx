@@ -1,64 +1,23 @@
-import { Avatar, Image, ListItem, Tab, TabView, Text } from '@rneui/themed';
+import { Tab, TabView } from '@rneui/themed';
 import * as React from 'react';
 import Pricing from '../../components/Pricing';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Dimensions, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import Swiper from 'react-native-swiper';
 
-const SwiperView = () => {
-  return (
-    <Swiper
-      showsButtons
-      autoplay={false}
-      autoplayTimeout={3}
-      loop={true}
-      index={0}
-      activeDotColor="#000"
-      dotColor="#fff">
-      <View>
-        <Image
-          style={{ width: Dimensions.get('window').width, height: '100%' }}
-          source={{
-            uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/c53c811f880411ebb6edd017c2d2eca2.jpg',
-          }}
-        />
-      </View>
-      <View>
-        <Image
-          style={{ width: Dimensions.get('window').width, height: '100%' }}
-          source={{
-            uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/01217514880511ebb6edd017c2d2eca2.jpg',
-          }}
-        />
-      </View>
-      <View>
-        <Image
-          style={{ width: Dimensions.get('window').width, height: '100%' }}
-          source={{
-            uri: 'https://android-class.oss-cn-hangzhou.aliyuncs.com/wallhaven-g7ezp3.png',
-          }}
-        />
-      </View>
-    </Swiper>
-  );
-};
 type Props = NativeStackScreenProps<any, any>;
 const SpikeScreen: React.FC<Props> = ({ navigation, route }) => {
   const [index, setIndex] = React.useState(0);
   const [w, setW] = React.useState(0);
-  const [h, setH] = React.useState(0);
   const handleChange = (num: number) => {
     setTimeout(() => {
       setIndex(num);
     });
   };
   React.useEffect(() => {
-    const { width, height } = Dimensions.get('window');
+    const { width } = Dimensions.get('window');
     setTimeout(() => {
       setW(width);
-      setH(height);
     });
   });
   return (
@@ -77,9 +36,9 @@ const SpikeScreen: React.FC<Props> = ({ navigation, route }) => {
           color: '#000',
         }}
         variant="primary">
-        <Tab.Item title="特价商品" />
-        <Tab.Item title="日用品类" />
-        <Tab.Item title="电子产品类" />
+        <Tab.Item title="特价活动" />
+        {/* <Tab.Item title="日用品类" /> */}
+        {/* <Tab.Item title="电子产品类" /> */}
       </Tab>
       <TabView
         value={index}
@@ -91,7 +50,7 @@ const SpikeScreen: React.FC<Props> = ({ navigation, route }) => {
             <Pricing navigation={navigation} route={route} />
           </View>
         </TabView.Item>
-        <TabView.Item>
+        {/* <TabView.Item>
           <>
             <ScrollView
               style={{
@@ -126,7 +85,7 @@ const SpikeScreen: React.FC<Props> = ({ navigation, route }) => {
         </TabView.Item>
         <TabView.Item>
           <Text>Tab 3</Text>
-        </TabView.Item>
+        </TabView.Item> */}
       </TabView>
     </>
   );

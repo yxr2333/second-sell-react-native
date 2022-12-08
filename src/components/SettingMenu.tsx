@@ -1,50 +1,10 @@
-import { Button } from '@rneui/themed';
 import * as React from 'react';
-import { Platform, View } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
-import { uploadImage } from '../api/common';
+import { View } from 'react-native';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const avatar_url =
   'https://android-class.oss-cn-hangzhou.aliyuncs.com/IMG_5138.JPG';
 const SettingMenu: React.FC = () => {
-  const handleBtnPress = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    })
-      .then(image => {
-        const { path } = image;
-        let source;
-        if (Platform.OS === 'android') {
-          // Android
-          source = path;
-        } else {
-          source = path.replace('file://', '');
-        }
-        let formData = new FormData();
-        let file = {
-          uri: source,
-          type: 'image/jpeg',
-          name: source.split('/').pop(),
-        };
-        formData.append('file', file);
-
-        uploadImage(formData)
-          .then(res => res.json())
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            console.error('文件上传失败', err);
-          });
-      })
-      .catch(err => {
-        console.log('取消选择');
-        console.error(err);
-      });
-  };
   return (
     <View>
       {/* <ListItem
@@ -68,18 +28,6 @@ const SettingMenu: React.FC = () => {
         </ListItem.Content>
         <ListItem.Chevron color="white" />
       </ListItem> */}
-      <Button
-        containerStyle={{
-          marginTop: 10,
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        type="solid"
-        title="上传图片测试"
-        onPress={() => handleBtnPress()}
-      />
     </View>
   );
 };

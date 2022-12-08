@@ -46,3 +46,11 @@ export function getGoodsListByTypeId(
     },
   });
 }
+
+export function saveGoods(goods: any) {
+  return request({
+    method: 'post',
+    url: '/goods/save',
+    data: goods,
+  });
+}

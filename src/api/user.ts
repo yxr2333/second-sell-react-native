@@ -1,4 +1,5 @@
 import {
+  UpdateUserBaseInfoParam,
   UpdateUserLoginPasswordParam,
   UserLoginParam,
 } from '../types/request/developRequest';
@@ -15,6 +16,14 @@ export function doLogin(data: UserLoginParam) {
 export function updateLoginPassword(data: UpdateUserLoginPasswordParam) {
   return request({
     url: '/userinfo/password',
+    method: 'put',
+    data,
+  });
+}
+
+export function updateUserBaseInfo(data: UpdateUserBaseInfoParam) {
+  return request({
+    url: '/userinfo/basic',
     method: 'put',
     data,
   });

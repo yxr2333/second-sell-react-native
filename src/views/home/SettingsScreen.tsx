@@ -131,7 +131,11 @@ const SettingsScreen: React.FC<BottomTabHeaderProps> = ({ navigation }) => {
             </Text>
           </View>
         ) : (
-          <Text style={styles.nameStyle}>请先点击登录</Text>
+          <Text
+            style={styles.nameStyle}
+            onPress={() => handleNavigate('Login')}>
+            请先点击登录
+          </Text>
         )}
       </View>
       <View style={styles.listStyle}>

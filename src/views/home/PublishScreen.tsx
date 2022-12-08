@@ -1,29 +1,26 @@
-import {
-  Button,
-  CheckBox,
-  Image,
-  Input,
-  Tab,
-  TabView,
-  Text,
-} from '@rneui/themed';
+import { Button, CheckBox, Image, Input, Text } from '@rneui/themed';
 import { Select, SelectItem } from '@ui-kitten/components';
 import { IndexPath } from '@ui-kitten/components/ui';
 import * as React from 'react';
 import { Dimensions, Platform, ScrollView, View } from 'react-native';
 
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { showMessage } from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
+import { useSelector } from 'react-redux';
 import { uploadImage } from '../../api/common';
-import { getAllGoodsType } from '../../api/goods';
+import { getAllGoodsType, saveGoods } from '../../api/goods';
 import {
   GetAllGoodsTypeResult,
   GoodsTypeBaseInfo,
 } from '../../types/response/developResponse';
 import useBrands from './../../hooks/useBrands';
+import { selectUserId } from './../../store/userSlice';
 const baseUrl =
   'https://android-class.oss-cn-hangzhou.aliyuncs.com/20221201144952.png';
 const { width } = Dimensions.get('window');
-const PublishScreen: React.FC = () => {
+type Props = NativeStackScreenProps<any, any>;
+const PublishScreen: React.FC<Props> = ({ navigation }) => {
   React.useEffect(() => {
     getAllGoodsType().then(res => {
       if (res) {
@@ -44,7 +41,6 @@ const PublishScreen: React.FC = () => {
       setW(width);
     });
   });
-  const [tabIndex, setTabIndex] = React.useState(0);
   // 获取宽度
   const [w, setW] = React.useState(0);
   const brands = useBrands();
@@ -63,6 +59,7 @@ const PublishScreen: React.FC = () => {
   const [checked, setChecked] = React.useState(false); // 是否打折
   const [discount, setDiscount] = React.useState(''); // 折扣率
   const [count, setCount] = React.useState(''); // 商品数量
+  const userId = useSelector(selectUserId);
   const [selectedCateIndex, setSelectedCateIndex] = React.useState(
     // 商品分类
     new IndexPath(0),
@@ -81,7 +78,14 @@ const PublishScreen: React.FC = () => {
   };
 
   const handleSelectImage = () => {
-    console.log('select image');
+    if (!userId) {
+      showMessage({
+        message: '请先登录',
+        type: 'danger',
+      });
+      navigation.navigate('Login');
+      return;
+    }
     ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -128,17 +132,29 @@ const PublishScreen: React.FC = () => {
 
   const handleSubmit = () => {
     const state = {
-      name,
-      url,
+      goodsName: name,
+      cover: url,
       description,
       price,
-      checked,
-      discount,
-      count,
-      selectedCateIndex: selectedCateIndex.row,
-      selectedBrandIndex,
+      discountPercent: discount,
+      isDiscount: checked,
+      freeTotal: count,
+      typeId: goodsTypes.find((item, index) => index === selectedCateIndex.row)
+        ?.id,
+      brand: brands.find((item, index) => index === selectedBrandIndex.row)
+        ?.name,
+      releaseUserId: userId,
     };
     console.log('submit', state);
+    saveGoods(state).then((res: any) => {
+      const { code } = res;
+      if (code === 200) {
+        showMessage({
+          message: '发布成功',
+          type: 'success',
+        });
+      }
+    });
   };
   const goodsOptions = goodsTypes.map((item, index) => (
     <SelectItem key={index} title={item.name} />
@@ -148,92 +164,75 @@ const PublishScreen: React.FC = () => {
   ));
   return (
     <>
-      <Tab
-        value={tabIndex}
-        onChange={setTabIndex}
-        indicatorStyle={{ backgroundColor: '#007aff' }}
-        titleStyle={{ color: '#000' }}>
-        <Tab.Item title="发布商品" />
-        <Tab.Item title="发布求购" />
-      </Tab>
-      <TabView value={tabIndex} onChange={setTabIndex}>
-        <TabView.Item>
-          <>
-            <ScrollView
-              style={{
-                width: w,
-                paddingLeft: 15,
-                paddingRight: 15,
-                marginBottom: 15,
-                marginTop: 15,
-              }}>
-              <Input label="商品名称" onChangeText={setName} />
-              {/* 文件上传组件 */}
-              <View style={{ marginBottom: 15, padding: 5 }}>
-                <Text
-                  style={{
-                    color: '#86939e',
-                    fontWeight: 'bold',
-                    fontSize: 16,
-                    marginBottom: 8,
-                  }}>
-                  上传文件
-                </Text>
-                <Image
-                  onPress={() => handleSelectImage()}
-                  style={{ width: 100, height: 100 }}
-                  source={{
-                    uri: url,
-                  }}
-                />
-                <View style={{ marginTop: 10 }}>
-                  <Button title="清除图片" onPress={() => setUrl(baseUrl)} />
-                </View>
-              </View>
-              <Input label="商品描述" onChangeText={setDescription} />
-              <Input label="商品价格" onChangeText={setPrice} />
-              <CheckBox
-                containerStyle={{ backgroundColor: '#f2f2f2' }}
-                title="是否打折"
-                checked={checked}
-                onPress={() => setChecked(!checked)}
-              />
-              {checked && <Input label="折扣率" onChangeText={setDiscount} />}
-              <Input label="商品数量" onChangeText={setCount} />
+      <ScrollView
+        style={{
+          width: w,
+          paddingLeft: 15,
+          paddingRight: 15,
+          marginBottom: 15,
+          marginTop: 15,
+        }}>
+        <Input label="商品名称" onChangeText={setName} />
+        {/* 文件上传组件 */}
+        <View style={{ marginBottom: 15, padding: 5 }}>
+          <Text
+            style={{
+              color: '#86939e',
+              fontWeight: 'bold',
+              fontSize: 16,
+              marginBottom: 8,
+            }}>
+            上传文件
+          </Text>
+          <Image
+            onPress={() => handleSelectImage()}
+            style={{ width: 100, height: 100 }}
+            source={{
+              uri: url,
+            }}
+          />
+          <View style={{ marginTop: 10 }}>
+            <Button title="清除图片" onPress={() => setUrl(baseUrl)} />
+          </View>
+        </View>
+        <Input label="商品描述" onChangeText={setDescription} />
+        <Input label="商品价格" onChangeText={setPrice} />
+        <CheckBox
+          containerStyle={{ backgroundColor: '#f2f2f2' }}
+          title="是否打折"
+          checked={checked}
+          onPress={() => setChecked(!checked)}
+        />
+        {checked && <Input label="折扣率" onChangeText={setDiscount} />}
+        <Input label="商品数量" onChangeText={setCount} />
 
-              {/* 商品分类选择器 */}
-              <Select
-                size="large"
-                label="商品分类"
-                value={goodsTypes[selectedCateIndex.row].name}
-                multiSelect={false}
-                selectedIndex={selectedCateIndex}
-                onSelect={index => handleSelectCateIndex(index)}>
-                {goodsOptions}
-              </Select>
+        {/* 商品分类选择器 */}
+        <Select
+          size="large"
+          label="商品分类"
+          value={goodsTypes[selectedCateIndex.row].name}
+          multiSelect={false}
+          selectedIndex={selectedCateIndex}
+          onSelect={index => handleSelectCateIndex(index)}>
+          {goodsOptions}
+        </Select>
 
-              {/* 商品品牌选择器 */}
-              <Select
-                style={{ marginTop: 15 }}
-                size="large"
-                label="商品品牌"
-                value={brands[selectedBrandIndex.row].name}
-                multiSelect={false}
-                selectedIndex={selectedBrandIndex}
-                onSelect={index => handleSelectBrandIndex(index)}>
-                {brandsOptions}
-              </Select>
+        {/* 商品品牌选择器 */}
+        <Select
+          style={{ marginTop: 15 }}
+          size="large"
+          label="商品品牌"
+          value={brands[selectedBrandIndex.row].name}
+          multiSelect={false}
+          selectedIndex={selectedBrandIndex}
+          onSelect={index => handleSelectBrandIndex(index)}>
+          {brandsOptions}
+        </Select>
 
-              <View style={{ marginTop: 10 }}>
-                <Button size="lg" title="发布" onPress={handleSubmit} />
-              </View>
-            </ScrollView>
-          </>
-        </TabView.Item>
-        <TabView.Item>
-          <Text>Word</Text>
-        </TabView.Item>
-      </TabView>
+        <View style={{ marginTop: 10 }}>
+          <Button size="lg" title="发布" onPress={handleSubmit} />
+        </View>
+      </ScrollView>
     </>
   );
 };

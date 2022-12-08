@@ -35,7 +35,7 @@ export default function useOperItems(
         type: 'materialicons',
         color: '#fff',
       },
-      containerStyle: { backgroundColor: 'red' },
+      containerStyle: { backgroundColor: '#ec5c37' },
       titleStyle: { color: 'white' },
       viewName: 'logout',
     },

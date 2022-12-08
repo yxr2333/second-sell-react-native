@@ -3,18 +3,40 @@ import { Button, IndexPath, MenuItem } from '@ui-kitten/components/ui';
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-const GoodsFilter = () => {
+type Props = {
+  // 选项切换事件的回调
+  selectChange: (index: IndexPath) => void;
+};
+const GoodsFilter: React.FC<Props> = ({ selectChange }) => {
   const [visible, setVisible] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(1));
+  const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(0));
+  const [buttonText, setButtonText] = React.useState('综合查询');
   const handleSelect = (index: IndexPath) => {
+    selectChange(index);
     setSelectedIndex(index);
     setVisible(false);
+    switch (index.row) {
+      case 0:
+        setButtonText('综合查询');
+        break;
+      case 1:
+        setButtonText('价格升序');
+        break;
+      case 2:
+        setButtonText('价格降序');
+        break;
+      case 3:
+        setButtonText('最新发布');
+        break;
+      default:
+        break;
+    }
   };
   const renderToggleButton = () => (
     <Button
       onPress={() => setVisible(true)}
       style={{ backgroundColor: '#57c3c2', borderColor: '#57c3c2' }}>
-      综合查询
+      {buttonText}
     </Button>
   );
   return (

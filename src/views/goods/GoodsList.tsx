@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Card, Icon, SearchBar, Text } from '@rneui/themed';
+import { IndexPath } from '@ui-kitten/components';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -9,6 +10,7 @@ import { getGoodsListByTypeId } from '../../api/goods';
 import GoodsFilter from '../../components/GoodsFilter';
 import { StackParamList } from '../../types';
 import { GetGoodsByTypeResult } from '../../types/response/developResponse';
+const moment = require('moment');
 
 type Props = NativeStackScreenProps<StackParamList, 'GoodsList'>;
 // 获取屏幕高度
@@ -79,6 +81,9 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
   const handleSeeDetail = (id: number) => {
     navigation.navigate('GoodsDetails', { goodsId: id });
   };
+  /**
+   * 页面触底事件
+   */
   const handleReachEnd = () => {
     getGoodsListByTypeId(typeId, page + 1, size).then((res: any) => {
       const { code, data } = res as GetGoodsByTypeResult;
@@ -107,7 +112,9 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
       }
     });
   };
-
+  /**
+   * 顶部刷新事件
+   */
   const handleRefresh = React.useCallback(() => {
     setRefreshing(true);
     getGoodsListByTypeId(typeId, page, size).then((res: any) => {
@@ -129,6 +136,76 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
       }
     });
   }, [page, size, typeId]);
+
+  const handleSelectChange = (index: IndexPath) => {
+    /**
+     *    <MenuItem title="综合" disabled />
+          <MenuItem title="价格升序" />
+          <MenuItem title="价格降序" />
+          <MenuItem title="最新发布" />
+     */
+    console.log(index);
+    switch (index.row) {
+      case 1:
+        console.log('价格升序');
+
+        // 价格升序
+        const list: any[] = [];
+        list.push(...goods.sort((a, b) => a.price - b.price));
+        setGoods(list);
+        break;
+      case 2:
+        // 价格降序
+        const list2: any[] = [];
+        list2.push(...goods.sort((a, b) => b.price - a.price));
+        setGoods(list2);
+        break;
+      case 3:
+        // 最新发布
+        const list3: any[] = [];
+        list3.push(
+          ...goods.sort(
+            (a, b) =>
+              moment(a.releaseTime).diff(moment(b.releaseTime), 'seconds') * -1,
+          ),
+        );
+        console.log(list3);
+
+        setGoods(list3);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const renderFunc = ({
+    item,
+    index,
+    columnIndex,
+  }: {
+    item?: any;
+    index?: any;
+    columnIndex?: any;
+  }) => {
+    return (
+      <Card
+        key={'' + index + columnIndex}
+        containerStyle={styles.cardContainer}>
+        <Card.Image
+          onPress={() => handleSeeDetail(item.id)}
+          source={{ uri: item.cover }}
+          style={{ height: item.height }}
+        />
+        <View>
+          <Text style={styles.goodsDesc}>{item.description}</Text>
+          <Text style={styles.priceText}>
+            ￥<Text style={{ fontSize: 24, color: 'red' }}>{item.price}</Text>
+          </Text>
+        </View>
+      </Card>
+    );
+  };
+
   return (
     // @ts-ignore
     <WaterfallFlow
@@ -140,6 +217,7 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
       style={styles.container}
       initialNumToRender={4}
       data={goods}
+      extraData={goods}
       numColumns={2}
       ListHeaderComponent={
         <React.Fragment>
@@ -150,29 +228,10 @@ const GoodsList: React.FC<Props> = ({ route, navigation }) => {
             value={search}
             onChangeText={updateSearch}
           />
-          <GoodsFilter />
+          <GoodsFilter selectChange={handleSelectChange} />
         </React.Fragment>
       }
-      renderItem={({ item, index, columnIndex }) => {
-        return (
-          <Card
-            key={'' + index + columnIndex}
-            containerStyle={styles.cardContainer}>
-            <Card.Image
-              onPress={() => handleSeeDetail(item.id)}
-              source={{ uri: item.cover }}
-              style={{ height: item.height }}
-            />
-            <View>
-              <Text style={styles.goodsDesc}>{item.description}</Text>
-              <Text style={styles.priceText}>
-                ￥
-                <Text style={{ fontSize: 24, color: 'red' }}>{item.price}</Text>
-              </Text>
-            </View>
-          </Card>
-        );
-      }}
+      renderItem={renderFunc}
     />
   );
 };

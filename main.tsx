@@ -72,6 +72,7 @@ const main: React.FC = () => {
                   <Stack.Screen
                     name="SpikeDetailScreen"
                     component={SpikeDetailScreen as any}
+                    options={{ title: '秒杀活动详情' }}
                   />
                   <Stack.Group>
                     <Stack.Screen

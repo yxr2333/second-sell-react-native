@@ -2,6 +2,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Avatar, Button, Card, Icon, SearchBar, Text } from '@rneui/themed';
 import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import ImageView from 'react-native-image-viewing';
+import { ImageSource } from 'react-native-image-viewing/dist/@types';
 import { randomGetGoods } from '../../api/goods';
 import useIcons from '../../hooks/useIcons';
 import { IconItem } from '../../types';
@@ -9,7 +11,6 @@ import {
   GetRandomGoodsResult,
   GoodsSimpleInfo,
 } from '../../types/response/developResponse';
-
 type Props = NativeStackScreenProps<any, any>;
 const SignInScreen: React.FC<Props> = ({ navigation }) => {
   const [search, setSearch] = React.useState('');
@@ -28,19 +29,40 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
     setSearch(text);
   };
   const icons = useIcons() as IconItem[][];
+  /**
+   * 点击图标按钮的回调事件
+   * @param title 页面标题
+   * @param typeId 商品类别编号
+   */
   const handlePressIcon = (title?: string, typeId?: number) => {
     console.log(title);
     if (title) {
       navigation.navigate('GoodsList', { title, typeId });
     }
   };
+  /**
+   * 确认搜索的回调事件
+   */
   const handleSubmitEditing = () => {
     if (search && search.length > 0) {
       navigation.navigate('SearchDetailScreen', { keyword: search });
     }
   };
+
+  const [visible, setIsVisible] = React.useState(false);
+  const [imageList, setImageList] = React.useState<ImageSource[]>([]);
+  const handlePressCardImage = (url: string) => {
+    setImageList([{ uri: url }]);
+    setIsVisible(true);
+  };
   return (
     <View>
+      <ImageView
+        images={imageList}
+        imageIndex={0}
+        visible={visible}
+        onRequestClose={() => setIsVisible(false)}
+      />
       <SearchBar
         platform="android"
         style={styles.searchView}
@@ -76,6 +98,7 @@ const SignInScreen: React.FC<Props> = ({ navigation }) => {
               <Card.Title>{item.name}</Card.Title>
               <Card.Divider />
               <Card.Image
+                onPress={() => handlePressCardImage(item.cover)}
                 style={{ padding: 0, width: '100%' }}
                 source={{
                   uri: item.cover,

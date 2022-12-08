@@ -20,13 +20,18 @@ export const userSlice = createSlice({
       state.userInfo.email = action.payload;
       console.log(state.userInfo);
     },
+    updateAvatar: (state, action) => {
+      state.userInfo.avatar = action.payload;
+      console.log('userInfo', state.userInfo);
+    },
     increment: state => {
       state.value += 1;
     },
   },
 });
 
-export const { increment, login, logout, updateEmail } = userSlice.actions;
+export const { increment, login, logout, updateEmail, updateAvatar } =
+  userSlice.actions;
 
 export const selectCount = (state: any) => state.user.value;
 export const selectUserToken = (state: any) => state.user.userInfo.token;

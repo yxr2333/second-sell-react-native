@@ -4,6 +4,9 @@ import * as React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import useCartList from '../../hooks/useCartList';
 import { StackParamList } from './../../types/index.d';
+
+import ImageView from 'react-native-image-viewing';
+import { ImageSource } from 'react-native-image-viewing/dist/@types';
 type Props = NativeStackScreenProps<StackParamList, 'CartList'>;
 const CartScreen: React.FC<Props> = ({ navigation }) => {
   const [totalPrice, setTotalPrice] = React.useState(0);
@@ -25,6 +28,10 @@ const CartScreen: React.FC<Props> = ({ navigation }) => {
       };
     }),
   );
+  /**
+   * 选中购物车中的某个商品
+   * @param idx 购物车索引
+   */
   const handlePressCartItem = (idx: number) => {
     if (carts[idx].isChecked) {
       setTotalPrice(totalPrice - carts[idx].price);
@@ -35,6 +42,9 @@ const CartScreen: React.FC<Props> = ({ navigation }) => {
     setCarts([...carts]);
   };
   const [selectAll, setSelectAll] = React.useState(false);
+  /**
+   * 全选购物车
+   */
   const handleSelectAll = () => {
     carts.forEach(item => (item.isChecked = !selectAll));
     let sum = 0;
@@ -47,11 +57,32 @@ const CartScreen: React.FC<Props> = ({ navigation }) => {
     setSelectAll(!selectAll);
     setCarts([...carts]);
   };
+
+  /**
+   * 跳转界面页面
+   */
   const handleGoToSettlement = () => {
     navigation.navigate('Settlement');
   };
+  const [visible, setIsVisible] = React.useState(false);
+  const [imageList, setImageList] = React.useState<ImageSource[]>([]);
+
+  /**
+   * 点击图片事件
+   * @param url 图片地址
+   */
+  const handlePressImage = (url: string) => {
+    setImageList([{ uri: url }]);
+    setIsVisible(true);
+  };
   return (
     <View>
+      <ImageView
+        images={imageList}
+        imageIndex={0}
+        visible={visible}
+        onRequestClose={() => setIsVisible(false)}
+      />
       <ScrollView style={{ marginBottom: 10 }}>
         <Card>
           <View style={styles.header}>
@@ -71,16 +102,17 @@ const CartScreen: React.FC<Props> = ({ navigation }) => {
                 bottomDivider
                 key={index}
                 containerStyle={{ marginBottom: 15 }}>
+                {/* 选择框 */}
                 <ListItem.CheckBox
                   checked={item.isChecked}
                   onPress={() => handlePressCartItem(index)}
                 />
                 <ListItem.Content>
-                  {/* <ListItem.Title>{item.decription}</ListItem.Title> */}
                   <View style={styles.cartItem}>
                     <Image
+                      onPress={() => handlePressImage(item.image)}
                       source={{ uri: item.image }}
-                      style={{ width: 100, height: 100 }}
+                      style={{ width: 100, height: 100, flex: 1 }}
                     />
                     <View style={styles.cartItemGoods}>
                       <Text style={styles.desc}>{item.decription}</Text>
@@ -126,10 +158,14 @@ const styles = StyleSheet.create({
   cartItem: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   cartItemGoods: {
+    flex: 2,
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
     marginLeft: 10,
   },
   desc: {

@@ -24,3 +24,10 @@ export type UpdateUserLoginPasswordParam = {
   requestKey: string;
   code: string;
 };
+
+export type UpdateUserBaseInfoParam = {
+  id: number;
+  username: string;
+  description: string;
+  avatar: string;
+};
