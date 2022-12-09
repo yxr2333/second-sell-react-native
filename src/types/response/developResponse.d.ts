@@ -124,3 +124,6 @@ export type GetAddressByIdResult = ApiResult<AddressInfo>;
 export type SendCodeByEmailResult = ApiResult<SendCodeEmailInfo>;
 export type GetGoodsDetailResult = ApiResult<Goods>;
 export type GetGoodsByTypeResult = ApiResult<PageData<Goods[]>>;
+export type GetUserPublishGoodsResult = ApiResult<Goods[]>;
+export type GetUserSellGoodsResult = ApiResult<Goods[]>;
+export type GetUserBuyGoodsResult = ApiResult<Goods[]>;
